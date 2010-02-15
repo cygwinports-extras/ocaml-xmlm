@@ -1,0 +1,20 @@
+GIT_URI="git://github.com/samoht/xmlm.git"
+GIT_REV=f7051e0
+
+inherit ocaml git
+
+DESCRIPTION="OCaml streaming XML library"
+HOMEPAGE="http://erratique.ch/software/xmlm"
+
+DIFF_EXCLUDES="*.html"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	./build
+}
+
+src_install() {
+	cd ${B}
+	INSTALLDIR=${D}${OCAML_LIBDIR}/xmlm ./build install
+}
