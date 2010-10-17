@@ -1,5 +1,5 @@
 category: OCaml
-requires: ocaml
+requires: ocaml-base
 sdesc: "OCaml streaming XML library"
 ldesc: "Xmlm is an OCaml module for streaming XML input/output. It aims
 at making XML processing robust and painless. The streaming interface
