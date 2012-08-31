@@ -1,0 +1,29 @@
+ORIG_PN="xmlm"
+inherit ocaml
+
+CATEGORY="OCaml"
+SUMMARY="OCaml streaming XML library"
+DESCRIPTION="Xmlm is an OCaml module for streaming XML input/output. It aims
+at making XML processing robust and painless. The streaming interface can
+process documents without building an in-memory representation. It lets the
+programmer translate its data structures to XML documents and vice-versa.
+Functions are provided to easily transform arborescent data structures
+to/from XML documents."
+HOMEPAGE="http://erratique.ch/software/xmlm"
+SRC_URI="http://erratique.ch/software/xmlm/releases/xmlm-${PV}.tbz"
+
+DIFF_EXCLUDES="*.html"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	${OCAML} setup.ml -configure --prefix /usr --destdir ${D} || error
+	${OCAML} setup.ml -build || error
+}
+
+src_install() {
+	cd ${B}
+	dodir ${OCAML_LIBDIR}
+	export OCAMLFIND_DESTDIR="${D}${OCAML_LIBDIR}"
+	${OCAML} setup.ml -install || error
+}
