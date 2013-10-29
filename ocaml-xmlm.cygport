@@ -1,7 +1,7 @@
 inherit ocaml
 
 NAME="ocaml-xmlm"
-VERSION=1.1.1
+VERSION=1.2.0
 RELEASE=1
 CATEGORY="OCaml"
 SUMMARY="OCaml streaming XML library"
@@ -19,14 +19,23 @@ DIFF_EXCLUDES="*.html"
 
 src_compile() {
 	lndirs
-	cd ${B}
-	${OCAML} setup.ml -configure --prefix /usr --destdir ${D} || error
-	${OCAML} setup.ml -build || error
+	cd ${B}/src
+	verbose ${OCAMLC} -c -o xmlm.cmi xmlm.mli
+	verbose ${OCAMLC} -c -annot -bin-annot -o xmlm.cmo xmlm.ml
+	verbose ${OCAMLC} -a -o xmlm.cma xmlm.cmo
+	verbose ${OCAMLOPT} -c -annot -bin-annot -o xmlm.cmx xmlm.ml
+	verbose ${OCAMLOPT} -a -o xmlm.cmxa xmlm.cmx
+	if defined ARCH_i686
+	then
+		verbose ${OCAMLOPT} -shared xmlm.cmx -o xmlm.cmxs
+	fi
 }
 
 src_install() {
-	cd ${B}
+	cd ${B}/src
 	dodir ${OCAML_LIBDIR}
-	export OCAMLFIND_DESTDIR="${D}${OCAML_LIBDIR}"
-	${OCAML} setup.ml -install || error
+	verbose ${OCAMLFIND} install \
+		-destdir ${D}${OCAML_LIBDIR} -ldconf ignore \
+		xmlm ../pkg/META xmlm.{a,cma,cmi,cmx,cmxa,mli} -optional xmlm.cmxs \
+		|| error
 }
