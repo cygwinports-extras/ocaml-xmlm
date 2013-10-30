@@ -3,7 +3,7 @@ inherit ocaml
 NAME="ocaml-xmlm"
 VERSION=1.2.0
 RELEASE=1
-CATEGORY="OCaml"
+CATEGORY="Libs"
 SUMMARY="OCaml streaming XML library"
 DESCRIPTION="Xmlm is an OCaml module for streaming XML input/output. It aims
 at making XML processing robust and painless. The streaming interface can
